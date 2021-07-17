@@ -4,6 +4,7 @@
 #include "Items/AH_Item.h"
 #include "Components/SphereComponent.h"
 #include "AH_Character.h"
+#include "Core/AH_GameMode.h"
 
 // Sets default values
 AAH_Item::AAH_Item()
@@ -25,7 +26,7 @@ AAH_Item::AAH_Item()
 void AAH_Item::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	GameModeReference = Cast<AAH_GameMode>(GetWorld()->GetAuthGameMode());
 }
 
 // Called every frame

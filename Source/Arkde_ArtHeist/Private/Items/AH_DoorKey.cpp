@@ -19,7 +19,14 @@ void AAH_DoorKey::Pickup(AAH_Character* PickupCharacter)
 {
 	Super::Pickup(PickupCharacter);
 
-	PickupCharacter->AddKey(KeyTag);
-	PickupCharacter->GainUltimateXP(XPValue);
+	if (IsValid(PickupCharacter))
+	{
+		if (PickupCharacter->GetCharacterType() == EAH_CharacterType::CharacterType_Player && IsValid(GameModeReference))
+		{
+			GameModeReference->AddKeyToCharacter(PickupCharacter, KeyTag);
+			PickupCharacter->GainUltimateXP(XPValue);
+		}
+
+	}
 	Destroy();
 }

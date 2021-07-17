@@ -8,6 +8,7 @@
 
 class USphereComponent; //Foward Declaration
 class AAH_Character;
+class AAH_GameMode;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Item : public AActor
@@ -18,6 +19,11 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* MainColliderComponent;
+
+protected:
+	UPROPERTY(BlueprintReadOnly)
+	AAH_GameMode* GameModeReference;
+
 	
 public:	
 	// Sets default values for this actor's properties

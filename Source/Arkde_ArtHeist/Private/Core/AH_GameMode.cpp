@@ -90,3 +90,12 @@ void AAH_GameMode::GameOver(AAH_Character* Character)
 	}
 	BP_GameOver(Character);
 }
+
+void AAH_GameMode::AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag)
+{
+	if (IsValid(KeyOwner))
+	{
+		OnKeyAddedDelegate.Broadcast(KeyTag);
+		KeyOwner->AddKey(KeyTag);
+	}
+}

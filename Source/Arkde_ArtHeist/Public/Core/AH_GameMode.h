@@ -6,6 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "AH_GameMode.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyAddedSignature, FName, KeyTag);
+
 /**
  * 
  */
@@ -38,6 +40,10 @@ protected:
 
 	void MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_SpectatingCamera* SpectatingCamera);
 
+public: 
+
+	UPROPERTY(BlueprintAssignable)
+	FOnKeyAddedSignature OnKeyAddedDelegate;
 
 public:
 
@@ -52,4 +58,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_GameOver(AAH_Character* Character);
+
+	void AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag);
 };
