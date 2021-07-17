@@ -13,10 +13,16 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "Core/AH_GameInstance.h"
+#include "Components/WidgetComponent.h"
+#include "UI/Enemy/AH_EnemyHealthBar.h"
 
 // Sets default values
 AAH_Enemy::AAH_Enemy()
 {
+
+	WidgetHealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetHealthBarComponent"));
+	WidgetHealthBarComponent->SetupAttachment(RootComponent);
+
 	bLoopPath = false;
 	bIsEnemyAfraid = false;
 	bIsEnemyDefeated = false;
@@ -36,6 +42,16 @@ void AAH_Enemy::BeginPlay()
 	Super::HealthComponent->OnDeadDelegate.AddDynamic(this, &AAH_Enemy::GiveXP);
 
 	MyAIController = Cast<AAH_AIController>(GetController());
+
+	if (IsValid(WidgetHealthBarComponent->GetUserWidgetObject()))
+	{
+		EnemyHealthBarReference = Cast<UAH_EnemyHealthBar>(WidgetHealthBarComponent->GetUserWidgetObject());
+		if (IsValid(EnemyHealthBarReference))
+		{
+			Super::HealthComponent->OnHealthUpdateDelegate.AddDynamic(EnemyHealthBarReference, &UAH_EnemyHealthBar::UpdateHealth);
+			HideHealthBar();
+		}
+	}
 
 }
 
@@ -60,10 +76,28 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 			GameInstanceReference->AddEnemyDefeatedToCounter();
 		}
 
+		if (IsValid(EnemyHealthBarReference))
+		{
+			HideHealthBar();
+		}
+
 	}
 	else
 	{
 		OnCallForHealthDelegate.Broadcast(DamagedActor, Damage);
+
+		if (bIsShowingHealthBar)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(TimerHandle_HideHealthBar);
+		}
+		else
+		{
+			ShowHealthBar();
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle_HideHealthBar, this, &AAH_Enemy::HideHealthBar, 1.0f, false);
+		}
+
+
+
 
 		if (IsValid(MyAIController))
 		{
@@ -103,6 +137,18 @@ void AAH_Enemy::GiveXP(AActor* DamageCauser)
 			TryToSpawnLoot();
 		}
 	}
+}
+
+void AAH_Enemy::HideHealthBar()
+{
+	bIsShowingHealthBar = false;
+	EnemyHealthBarReference->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void AAH_Enemy::ShowHealthBar()
+{
+	bIsShowingHealthBar = true;
+	EnemyHealthBarReference->SetVisibility(ESlateVisibility::Visible);
 }
 
 bool AAH_Enemy::TryToSpawnLoot()

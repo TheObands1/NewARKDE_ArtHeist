@@ -15,11 +15,17 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnNotifyOfDeathSignature, AActor*,
 class AAH_PathActor;
 class AAH_Item;
 class AAH_AIController;
+class UWidgetComponent;
+class UAH_EnemyHealthBar;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Enemy : public AAH_Character
 {
 	GENERATED_BODY()
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UWidgetComponent* WidgetHealthBarComponent;
 
 public:
 
@@ -41,6 +47,9 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Enemy Defeated Counter")
 	bool bIsEnemyDefeated;
 
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	bool bIsShowingHealthBar;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
 	int DirectionIndex;
 
@@ -58,6 +67,11 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "AI| AI Controller")
 	AAH_AIController* MyAIController;
+
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	UAH_EnemyHealthBar* EnemyHealthBarReference;
+
+	FTimerHandle TimerHandle_HideHealthBar;
 
 public:
 	//variables
@@ -83,7 +97,13 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_TryToSpawnLoot();
 
+	void HideHealthBar();
+
+	void ShowHealthBar();
+
+
 	bool TryToSpawnLoot();
+
 
 public:
 	//Functions
