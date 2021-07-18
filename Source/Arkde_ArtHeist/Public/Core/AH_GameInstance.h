@@ -6,6 +6,9 @@
 #include "Engine/GameInstance.h"
 #include "AH_GameInstance.generated.h"
 
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyKilledSignature, int, EnemiesDefeated);
+
 /**
  * 
  */
@@ -21,6 +24,10 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Save System")
 	FString SaveSlotName;
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnEnemyKilledSignature OnEnemyKilledDelegate;
 
 public:
 

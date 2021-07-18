@@ -7,6 +7,8 @@
 #include "AH_GameMode.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyAddedSignature, FName, KeyTag);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameStateChangeSignature);
+
 
 /**
  * 
@@ -24,6 +26,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spectating Camera")
 	float SpectatingBlendTime;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameFlow")
+	FName MainMenuMapName;
 
 	//There is no need for VisibleAnywhere, As the GameMode is an abstract component
 	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
@@ -31,6 +35,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
 	AAH_SpectatingCamera* GameOverCamera;
+
+	FTimerHandle TimerHandle_BackToMainMenu;
+public:
+	//Constructor
+	AAH_GameMode();
+
 
 protected:
 	// Called when the game starts
@@ -45,6 +55,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnKeyAddedSignature OnKeyAddedDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnGameStateChangeSignature OnVictoryDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnGameStateChangeSignature OnGameOverDelegate;
+
 public:
 
 	UFUNCTION()
@@ -58,6 +74,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_GameOver(AAH_Character* Character);
+
+	void BackToMainMenu();
 
 	void AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag);
 };

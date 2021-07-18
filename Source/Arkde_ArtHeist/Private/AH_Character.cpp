@@ -18,6 +18,8 @@
 #include "Core/AH_GameMode.h"
 #include "Core/AH_GameInstance.h"
 #include "Core/AH_PlayerController.h"
+#include "Components/WidgetComponent.h"
+#include "UI/AH_BurningSymbol.h"
 //#include "Niagara/Public/NiagaraComponent.h"
 //#include "Niagara/Public/NiagaraFunctionLibrary.h"
 
@@ -56,6 +58,9 @@ AAH_Character::AAH_Character()
 	MeleeArmDetectorComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	MeleeArmDetectorComponent->SetCollisionResponseToChannel(COLLISION_ENEMY, ECR_Overlap);
 
+	WidgetBurningComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetBurningComponent"));
+	WidgetBurningComponent->SetupAttachment(RootComponent);
+
 	AIDetectionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("AIDetectionComponent"));
 	AIDetectionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	AIDetectionComponent->SetCollisionResponseToChannel(COLLISION_AIDETECTION, ECR_Block);
@@ -82,7 +87,6 @@ AAH_Character::AAH_Character()
 	NormalMeleeColliderHalfHeight = 44;
 	NormalMeleeColliderLocation = FVector(0, 0, 0);
 	NormalMeleeColliderRadius = 15;
-
 	
 	UltimateMeleeArmColliderHalfHeight = 350;
 	UltimateMeleeArmColliderRadius = 150;
@@ -149,6 +153,15 @@ void AAH_Character::InitializeReferences()
 
 	GameModeReference = Cast<AAH_GameMode>(GetWorld()->GetAuthGameMode());
 	GameInstanceReference = Cast<UAH_GameInstance>(GetWorld()->GetGameInstance());
+
+	if (IsValid(WidgetBurningComponent->GetUserWidgetObject()))
+	{
+		BurningSymbolReference= Cast<UAH_BurningSymbol>(WidgetBurningComponent->GetUserWidgetObject());
+		if (IsValid(BurningSymbolReference))
+		{
+			DeactivateBurningSymbol();
+		}
+	}
 }
 
 void AAH_Character::InitializeVariables()
@@ -609,6 +622,22 @@ void AAH_Character::OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, 
 		{
 			GameModeReference->GameOver(this);
 		}
+	}
+}
+
+void AAH_Character::ActivateBurningSymbol()
+{
+	if (IsValid(BurningSymbolReference))
+	{
+		BurningSymbolReference->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void AAH_Character::DeactivateBurningSymbol()
+{
+	if (IsValid(BurningSymbolReference))
+	{
+		BurningSymbolReference->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 

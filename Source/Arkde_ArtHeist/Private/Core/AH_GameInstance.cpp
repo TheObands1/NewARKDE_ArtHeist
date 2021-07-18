@@ -13,6 +13,7 @@ UAH_GameInstance::UAH_GameInstance()
 void UAH_GameInstance::AddEnemyDefeatedToCounter()
 {
 	EnemiesDefeatedCounter++;
+	OnEnemyKilledDelegate.Broadcast(EnemiesDefeatedCounter);
 	BP_AddEnemyDefeatedToCounter();
 }
 

@@ -19,6 +19,8 @@ class UAH_HealthComponent;
 class USphereComponent;
 class UAH_GameInstance;
 class AAH_GameMode;
+class UWidgetComponent;
+class UAH_BurningSymbol;
 //class UNiagaraSystem;
 
 UENUM(Blueprintable)
@@ -62,6 +64,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAH_HealthComponent* HealthComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UWidgetComponent* WidgetBurningComponent;
 
 protected:
 	//Variables
@@ -227,6 +232,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Animation")
 	UAnimMontage* UltimateMeleeMontage;
+
+	UPROPERTY(BlueprintReadOnly, Category = "UI")
+	UAH_BurningSymbol* BurningSymbolReference;
 	
 	/*
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Effects")
@@ -346,10 +354,10 @@ protected:
 	UFUNCTION()
 	void OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Burning State")
+	UFUNCTION(BlueprintCallable, Category = "Burning State")
 	void ActivateBurningSymbol();
 
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Burning State")
+	UFUNCTION(BlueprintCallable, Category = "Burning State")
 	void DeactivateBurningSymbol();
 
 public:	

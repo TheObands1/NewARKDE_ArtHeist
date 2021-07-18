@@ -8,6 +8,11 @@
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+AAH_GameMode::AAH_GameMode()
+{
+	MainMenuMapName = "MainMenu";
+}
+
 void AAH_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -67,15 +72,20 @@ void AAH_GameMode::MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_Spe
 
 void AAH_GameMode::Victory(AAH_Character* Character)
 {
+	OnVictoryDelegate.Broadcast();
 	Character->DisableInput(nullptr);
 	MoveCameraToSpectatingPoint(Character, VictoryCamera);
 	BP_Victory(Character);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, 3.0f, false);
 	
 }
 
 
 void AAH_GameMode::GameOver(AAH_Character* Character)
 {
+	OnGameOverDelegate.Broadcast();
+
+
 	Character->GetMovementComponent()->StopMovementImmediately();
 	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	if (Character->HasToDestroy())
@@ -89,6 +99,12 @@ void AAH_GameMode::GameOver(AAH_Character* Character)
 		MoveCameraToSpectatingPoint(Character, GameOverCamera);
 	}
 	BP_GameOver(Character);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, 3.0f, false);
+}
+
+void AAH_GameMode::BackToMainMenu()
+{
+	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
 }
 
 void AAH_GameMode::AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag)
