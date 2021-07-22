@@ -21,6 +21,7 @@ class UAH_GameInstance;
 class AAH_GameMode;
 class UWidgetComponent;
 class UAH_BurningSymbol;
+class UAudioComponent;
 //class UNiagaraSystem;
 
 UENUM(Blueprintable)
@@ -60,13 +61,13 @@ protected:
 	UCapsuleComponent* MeleeArmDetectorComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	USphereComponent* AIDetectionComponent;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAH_HealthComponent* HealthComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UWidgetComponent* WidgetBurningComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* StepSoundComponent;
 
 protected:
 	//Variables
@@ -405,6 +406,8 @@ public:
 	void Burn();
 
 	void DamageDueToBurn();
+
+	void PlayStepSound();
 
 	virtual void UpdateUltimateDuration(float Value, EAH_UltimateType UltimateType);
 

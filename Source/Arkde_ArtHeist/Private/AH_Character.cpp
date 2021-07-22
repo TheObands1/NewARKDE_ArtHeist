@@ -20,6 +20,7 @@
 #include "Core/AH_PlayerController.h"
 #include "Components/WidgetComponent.h"
 #include "UI/AH_BurningSymbol.h"
+#include "Components/AudioComponent.h"
 //#include "Niagara/Public/NiagaraComponent.h"
 //#include "Niagara/Public/NiagaraFunctionLibrary.h"
 
@@ -61,9 +62,8 @@ AAH_Character::AAH_Character()
 	WidgetBurningComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetBurningComponent"));
 	WidgetBurningComponent->SetupAttachment(RootComponent);
 
-	AIDetectionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("AIDetectionComponent"));
-	AIDetectionComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
-	AIDetectionComponent->SetCollisionResponseToChannel(COLLISION_AIDETECTION, ECR_Block);
+	StepSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("StepSoundComponent"));
+	StepSoundComponent->SetupAttachment(RootComponent);
 	
 	HealthComponent = CreateDefaultSubobject<UAH_HealthComponent>(TEXT("HealthComponent"));
 
@@ -255,6 +255,11 @@ void AAH_Character::DamageDueToBurn()
 	{
 		UGameplayStatics::ApplyDamage(this, BurningDamage, this->GetController(), this, MyDamageType);
 	}
+}
+
+void AAH_Character::PlayStepSound()
+{
+	StepSoundComponent->Play();
 }
 
 void AAH_Character::Interact()
