@@ -8,6 +8,7 @@
 
 class UDamageType;
 class ACharacter;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Weapon : public AActor
@@ -22,6 +23,9 @@ protected:
 	//Variables
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	float Damage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* WeaponSound;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TSubclassOf<UDamageType> DamageType;
@@ -50,4 +54,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCharacterOwner(ACharacter* NewOwner);
+
+	UFUNCTION(BlueprintCallable)
+	void PlaySound(USoundCue* SoundCue, bool bIs3D = false, FVector SoundLocation = FVector::ZeroVector);
 };

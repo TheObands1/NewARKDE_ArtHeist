@@ -3,6 +3,8 @@
 
 #include "Weapons/AH_Weapon.h"
 #include "GameFramework/Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AAH_Weapon::AAH_Weapon()
@@ -31,6 +33,7 @@ void AAH_Weapon::Tick(float DeltaTime)
 void AAH_Weapon::StartAction()
 {
 	BP_StartAction();
+	PlaySound(WeaponSound);
 }
 
 void AAH_Weapon::StopAction()
@@ -47,5 +50,22 @@ void AAH_Weapon::SetCharacterOwner(ACharacter* NewOwner)
 	}
 
 
+}
+
+void AAH_Weapon::PlaySound(USoundCue* SoundCue, bool bIs3D, FVector SoundLocation)
+{
+	if (!IsValid(SoundCue))
+	{
+		return;
+	}
+
+	if (bIs3D)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), SoundCue, SoundLocation);
+	}
+	else
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), SoundCue);
+	}
 }
 
