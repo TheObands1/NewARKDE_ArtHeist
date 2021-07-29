@@ -64,6 +64,8 @@ public:
 
 	void SetIsReceivingDamage(bool NewState) { bIsReceivingDamage = NewState; };
 
+	void DeactivateAIPerception();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

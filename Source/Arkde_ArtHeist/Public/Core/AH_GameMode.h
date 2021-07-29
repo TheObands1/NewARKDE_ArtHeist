@@ -8,13 +8,15 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnKeyAddedSignature, FName, KeyTag);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameStateChangeSignature);
-
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAlertModeChangeSignature, bool, bIsInAlertMode);
 
 /**
  * 
  */
 class AAH_Character;
+class AAH_Enemy;
 class AAH_SpectatingCamera;
+class USoundCue;
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_GameMode : public AGameModeBase
 {
@@ -26,6 +28,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Spectating Camera")
 	float SpectatingBlendTime;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GameFlow")
+	float TimeToGoBackToMenuAfterVictory;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "GameFlow")
+	float TimeToGoBackToMenuAfterGameOver;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Level")
+	bool bIsInAlertMode;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "GameFlow")
 	FName MainMenuMapName;
 
@@ -36,7 +47,17 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
 	AAH_SpectatingCamera* GameOverCamera;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* VictoryMusic;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* GameOverMusic;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Level")
+	TArray<AAH_Enemy*> LevelEnemies;
+
 	FTimerHandle TimerHandle_BackToMainMenu;
+
 public:
 	//Constructor
 	AAH_GameMode();
@@ -50,6 +71,10 @@ protected:
 
 	void MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_SpectatingCamera* SpectatingCamera);
 
+	void PlayMusic(USoundCue* SoundCueToPlay);
+
+	void SetupEnemiesInLevel();
+
 public: 
 
 	UPROPERTY(BlueprintAssignable)
@@ -60,6 +85,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStateChangeSignature OnGameOverDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnAlertModeChangeSignature OnAlertModeChangeDelegate;
 
 public:
 
@@ -78,4 +106,6 @@ public:
 	void BackToMainMenu();
 
 	void AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag);
+
+	void CheckAlertMode();
 };

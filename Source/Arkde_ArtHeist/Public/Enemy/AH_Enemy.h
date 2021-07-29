@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "UI")
 	bool bIsShowingHealthBar;
 
+	UPROPERTY(BlueprintReadOnly, Category = "AI")
+	bool bIsAlert;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
 	int DirectionIndex;
 
@@ -109,8 +112,13 @@ public:
 	//Functions
 	bool GetLoopPath() { return bLoopPath; };
 
+	bool GetIsAlert() { return bIsAlert; };
+
 	int GetDirectionIndex() { return DirectionIndex; };
 
 	float GetWaitingTimeOnPathPoint() { return WaitingTimeOnPathPoint; };
+
+	void SetIsAlert(bool NewValue);
+
 
 };

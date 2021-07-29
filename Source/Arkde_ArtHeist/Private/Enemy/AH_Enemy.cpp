@@ -15,6 +15,7 @@
 #include "Core/AH_GameInstance.h"
 #include "Components/WidgetComponent.h"
 #include "UI/Enemy/AH_EnemyHealthBar.h"
+#include "Core/AH_GameMode.h"
 
 // Sets default values
 AAH_Enemy::AAH_Enemy()
@@ -60,6 +61,7 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 	if (CurrentHealthComponent->IsDead())
 	{
 		OnNotifyOfDeathDelegate.Broadcast(DamagedActor, Damage);
+		SetIsAlert(false);
 
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		MeleeArmDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -67,6 +69,7 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 
 		if (IsValid(MyAIController))
 		{
+			MyAIController->DeactivateAIPerception();
 			MyAIController->UnPossess();
 		}
 
@@ -170,4 +173,13 @@ bool AAH_Enemy::TryToSpawnLoot()
 	}
 
 	return false;
+}
+
+void AAH_Enemy::SetIsAlert(bool NewValue)
+{
+	bIsAlert = NewValue;
+	if (IsValid(GameModeReference))
+	{
+		GameModeReference->CheckAlertMode();
+	}
 }

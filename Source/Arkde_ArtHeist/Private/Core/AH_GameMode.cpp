@@ -7,16 +7,24 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
+#include "Enemy/AH_Enemy.h"
 
 AAH_GameMode::AAH_GameMode()
 {
 	MainMenuMapName = "MainMenu";
+	TimeToGoBackToMenuAfterVictory = 8.0f;
+	TimeToGoBackToMenuAfterGameOver = 8.0f;
+	bIsInAlertMode = false;
 }
 
 void AAH_GameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	SetupSpectatingCameras();
+	SetupEnemiesInLevel();
+
+
 }
 
 void AAH_GameMode::SetupSpectatingCameras()
@@ -70,13 +78,47 @@ void AAH_GameMode::MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_Spe
 
 }
 
+void AAH_GameMode::PlayMusic(USoundCue* SoundCueToPlay)
+{
+	if (!IsValid(SoundCueToPlay))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySound2D(GetWorld(), SoundCueToPlay);
+
+
+}
+
+void AAH_GameMode::SetupEnemiesInLevel()
+{
+	TArray<AActor*> PossibleEnemyActors;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AAH_Enemy::StaticClass(), PossibleEnemyActors);
+
+	for (AActor* PossibleEnemy : PossibleEnemyActors)
+	{
+		if (!IsValid(PossibleEnemy))
+		{
+			continue;
+		}
+
+		AAH_Enemy* NewEnemyToAdd = Cast<AAH_Enemy>(PossibleEnemy);
+		if (IsValid(NewEnemyToAdd))
+		{
+			LevelEnemies.AddUnique(NewEnemyToAdd);
+		}
+	}
+}
+
 void AAH_GameMode::Victory(AAH_Character* Character)
 {
 	OnVictoryDelegate.Broadcast();
 	Character->DisableInput(nullptr);
 	MoveCameraToSpectatingPoint(Character, VictoryCamera);
 	BP_Victory(Character);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, 3.0f, false);
+	PlayMusic(VictoryMusic);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterVictory, false);
 	
 }
 
@@ -99,7 +141,8 @@ void AAH_GameMode::GameOver(AAH_Character* Character)
 		MoveCameraToSpectatingPoint(Character, GameOverCamera);
 	}
 	BP_GameOver(Character);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, 3.0f, false);
+	PlayMusic(GameOverMusic);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterGameOver, false);
 }
 
 void AAH_GameMode::BackToMainMenu()
@@ -113,5 +156,30 @@ void AAH_GameMode::AddKeyToCharacter(AAH_Character* KeyOwner, FName KeyTag)
 	{
 		OnKeyAddedDelegate.Broadcast(KeyTag);
 		KeyOwner->AddKey(KeyTag);
+	}
+}
+
+void AAH_GameMode::CheckAlertMode()
+{
+	bool bIsEnemyInAlertMode = false;
+	for (AAH_Enemy* Enemy : LevelEnemies)
+	{
+		if (!IsValid(Enemy))
+		{
+			continue;
+		}
+
+		if (Enemy->GetIsAlert())
+		{
+			bIsEnemyInAlertMode = true;
+			break;
+		}
+
+	}
+
+	if (bIsInAlertMode != bIsEnemyInAlertMode)
+	{
+		bIsInAlertMode = bIsEnemyInAlertMode;
+		OnAlertModeChangeDelegate.Broadcast(bIsInAlertMode);
 	}
 }

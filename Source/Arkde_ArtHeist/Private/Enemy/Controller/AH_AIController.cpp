@@ -23,6 +23,11 @@ AAH_AIController::AAH_AIController()
 	bIsReceivingDamage = false;
 }
 
+void AAH_AIController::DeactivateAIPerception()
+{
+	AIPerceptionComponent->Deactivate();
+}
+
 void AAH_AIController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -80,6 +85,10 @@ void AAH_AIController::UpdateSenses(const TArray<AActor*>& UpdatedActors)
 				{
 				case 0:
 					MyBlackboard->SetValueAsBool(CanSeePlayerParameterName, PerceptionInfo.LastSensedStimuli[i].WasSuccessfullySensed());
+					if (IsValid(MyEnemy))
+					{
+						MyEnemy->SetIsAlert(PerceptionInfo.LastSensedStimuli[i].WasSuccessfullySensed());
+					}
 					break;
 				case 1:
 					MyBlackboard->SetValueAsBool(InvestigatingParameterName, bIsReceivingDamage);

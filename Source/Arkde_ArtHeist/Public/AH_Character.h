@@ -291,8 +291,6 @@ protected:
 
 	FTimerDelegate TimerDelegate_BeginUltimateBehaviour;
 
-//	FTimerDelegate TimerDelegate_BeginUltimateMeleeBehaviour;
-
 	FTimerDelegate TimerDelegate_UltimateDuration;
 
 
