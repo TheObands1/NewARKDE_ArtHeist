@@ -16,6 +16,8 @@ class USphereComponent;
 class UAH_HealthComponent;
 class UStaticMeshComponent;
 class UAH_GameInstance;
+class UAudioComponent;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Bot : public APawn
@@ -36,6 +38,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USphereComponent* SelfDestructionDetectorComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* TimerSoundComponent;
 
 protected:
 	//Variables
@@ -81,6 +86,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Loot System")
 	TSubclassOf<AAH_Item> LootItemClass;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* ExplosionSound;
+
 	UMaterialInstanceDynamic* BotMaterial;
 
 	UAH_GameInstance* GameInstanceReference;
@@ -111,6 +119,10 @@ protected:
 	void BP_TryToSpawnLoot();
 
 	bool TryToSpawnLoot();
+
+	void PlayTimerSound();
+
+	void PlayExplosionSound();
 
 public:	
 	// Called every frame

@@ -16,6 +16,8 @@
 #include "Weapons/AH_Rifle.h"
 #include "Items/AH_Item.h"
 #include "Core/AH_GameInstance.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AAH_Bot::AAH_Bot()
@@ -35,6 +37,9 @@ AAH_Bot::AAH_Bot()
 	SelfDestructionDetectorComponent->SetSphereRadius(150);
 
 	HealthComponent = CreateDefaultSubobject<UAH_HealthComponent>(TEXT("HealthComponent"));
+
+	TimerSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("TimerSoundComponent"));
+	TimerSoundComponent->SetupAttachment(RootComponent);
 
 	MinDistanceToTarget = 100.0f;
 	ForceMagnitude = 1000.0f;
@@ -127,6 +132,8 @@ void AAH_Bot::SelfDestruction()
 		MySpawner->NotifyOfBotDeath();
 	}
 
+	PlayExplosionSound();
+
 	Destroy();
 
 }
@@ -166,6 +173,7 @@ void AAH_Bot::GiveXP(AActor* DamageCauser)
 
 void AAH_Bot::SelfDamage()
 {
+	PlayTimerSound();
 	UGameplayStatics::ApplyDamage(this, 20, GetInstigatorController(), this, nullptr);
 }
 
@@ -210,6 +218,21 @@ bool AAH_Bot::TryToSpawnLoot()
 	}
 
 	return false;
+}
+
+void AAH_Bot::PlayTimerSound()
+{
+	TimerSoundComponent->Play();
+}
+
+void AAH_Bot::PlayExplosionSound()
+{
+	if (!IsValid(ExplosionSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionSound, GetActorLocation());
 }
 
 // Called every frame

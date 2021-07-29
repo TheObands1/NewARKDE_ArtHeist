@@ -22,6 +22,7 @@ class AAH_GameMode;
 class UWidgetComponent;
 class UAH_BurningSymbol;
 class UAudioComponent;
+class USoundCue;
 //class UNiagaraSystem;
 
 UENUM(Blueprintable)
@@ -68,6 +69,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAudioComponent* StepSoundComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* VoiceSoundComponent;
 
 protected:
 	//Variables
@@ -259,6 +263,24 @@ protected:
 
 	APlayerController* PlayerControllerReference;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* DeathSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* HurtSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* UltimateMeleeSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* UltimateRifleSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* JumpSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* MeleeSound;
+
 	FTimerHandle TimerHandle_Burning;
 
 	FTimerHandle TimerHandle_Ultimate;
@@ -272,6 +294,7 @@ protected:
 //	FTimerDelegate TimerDelegate_BeginUltimateMeleeBehaviour;
 
 	FTimerDelegate TimerDelegate_UltimateDuration;
+
 
 public:
 	//Public Variables
@@ -330,10 +353,10 @@ protected:
 
 	virtual void StopUltimate();
 
+	void GoToMainMenu();
+
 	UFUNCTION()
 	virtual void BeginUltimateBehaviour(EAH_UltimateType UltimateType);
-
-	void GoToMainMenu();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Pause Game")
 	void BP_PauseGame(bool PausedState);
@@ -408,6 +431,8 @@ public:
 	void DamageDueToBurn();
 
 	void PlayStepSound();
+
+	void PlayVoiceSound(USoundCue* VoiceSound);
 
 	virtual void UpdateUltimateDuration(float Value, EAH_UltimateType UltimateType);
 

@@ -21,6 +21,7 @@
 #include "Components/WidgetComponent.h"
 #include "UI/AH_BurningSymbol.h"
 #include "Components/AudioComponent.h"
+#include "Sound/SoundCue.h"
 //#include "Niagara/Public/NiagaraComponent.h"
 //#include "Niagara/Public/NiagaraFunctionLibrary.h"
 
@@ -64,6 +65,9 @@ AAH_Character::AAH_Character()
 
 	StepSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("StepSoundComponent"));
 	StepSoundComponent->SetupAttachment(RootComponent);
+
+	VoiceSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("VoiceSoundComponent"));
+	VoiceSoundComponent->SetupAttachment(RootComponent);
 	
 	HealthComponent = CreateDefaultSubobject<UAH_HealthComponent>(TEXT("HealthComponent"));
 
@@ -194,10 +198,10 @@ void AAH_Character::MoveRight(float value)
 
 void AAH_Character::Jump()
 {
-	
 	if (JumpCounter < MaxJumps)
 	{
 		JumpCounter += 1;
+		PlayVoiceSound(JumpSound);
 		Super::Jump();
 	}
 }
@@ -354,6 +358,7 @@ void AAH_Character::StartMelee()
 	if (IsValid(MyAnimInstance) && IsValid(MeleeMontage))
 	{
 		MyAnimInstance->Montage_Play(MeleeMontage, NormalPlayRate);
+		PlayVoiceSound(MeleeSound);
 		
 		if (CurrentComboMultiplier <= 2)
 		{
@@ -459,6 +464,8 @@ void AAH_Character::StartUltimate(EAH_UltimateType UltimateType)
 
 		if (UltimateType == EAH_UltimateType::UltimateType_Rifle)
 		{
+			PlayVoiceSound(UltimateRifleSound);
+
 			if (IsValid(MyAnimInstance) && IsValid(UltimateRifleMontage))
 			{
 				GetCharacterMovement()->MaxWalkSpeed = 0;
@@ -474,6 +481,8 @@ void AAH_Character::StartUltimate(EAH_UltimateType UltimateType)
 
 		if (UltimateType == EAH_UltimateType::UltimateType_Melee)
 		{
+			PlayVoiceSound(UltimateMeleeSound);
+
 			if (IsValid(MyAnimInstance) && IsValid(UltimateMeleeMontage))
 			{
 				GetCharacterMovement()->MaxWalkSpeed = 0;
@@ -491,6 +500,17 @@ void AAH_Character::StartUltimate(EAH_UltimateType UltimateType)
 
 void AAH_Character::StopUltimate()
 {
+}
+
+void AAH_Character::PlayVoiceSound(USoundCue* VoiceSound)
+{
+	if (!IsValid(VoiceSound))
+	{
+		return;
+	}
+
+	VoiceSoundComponent->SetSound(VoiceSound);
+	VoiceSoundComponent->Play();
 }
 
 void AAH_Character::GainUltimateXP(float XPGained)
@@ -620,12 +640,20 @@ void AAH_Character::ControlGamePausedState()
 
 void AAH_Character::OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
-
-	if (HealthComponent->IsDead() && GetCharacterType() == EAH_CharacterType::CharacterType_Player)
+	if (!HealthComponent->IsDead())
 	{
-		if (IsValid(GameModeReference))
+		PlayVoiceSound(HurtSound);
+	}
+
+	if (HealthComponent->IsDead())
+	{
+		PlayVoiceSound(DeathSound);
+		if (GetCharacterType() == EAH_CharacterType::CharacterType_Player)
 		{
-			GameModeReference->GameOver(this);
+			if (IsValid(GameModeReference))
+			{
+				GameModeReference->GameOver(this);
+			}
 		}
 	}
 }

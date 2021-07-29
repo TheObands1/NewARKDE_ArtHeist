@@ -17,6 +17,7 @@ class UParticleSystem;
 class AAH_Enemy;
 class AAH_Item;
 class UAH_GameInstance;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_HealingBot : public APawn
@@ -88,6 +89,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	AAH_Enemy* CurrentEnemyToCure;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* ExplosionSound;
+
 	UMaterialInstanceDynamic* BotMaterial;
 
 	UAH_GameInstance* GameInstanceReference;
@@ -121,15 +125,19 @@ protected:
 	UFUNCTION()
 	void GiveXP(AActor* DamageCauser);
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_TryToSpawnLoot();
+
 	void SetupEnemiesInWorld();
+
+	void PlayExplosionSound();
 
 	UFUNCTION(BlueprintCallable, Category = "HealingBot Navigation")
 	FVector GetNextPathPoint();
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void BP_TryToSpawnLoot();
-
 	bool TryToSpawnLoot();
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

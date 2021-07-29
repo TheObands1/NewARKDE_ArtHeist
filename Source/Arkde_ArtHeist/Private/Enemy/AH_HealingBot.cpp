@@ -16,6 +16,7 @@
 #include "Items/AH_Item.h"
 #include "Math/UnrealMathUtility.h"
 #include "Core/AH_GameInstance.h"
+#include "Sound/SoundCue.h"
 
 
 
@@ -231,6 +232,8 @@ void AAH_HealingBot::TakingDamage(UAH_HealthComponent* CurrentHealthComponent, A
 			}
 		}
 
+		PlayExplosionSound();
+
 		Destroy();
 
 	}
@@ -254,6 +257,15 @@ bool AAH_HealingBot::TryToSpawnLoot()
 	}
 
 	return false;
+}
+void AAH_HealingBot::PlayExplosionSound()
+{
+	if (!IsValid(ExplosionSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionSound, GetActorLocation());
 }
 // Called every frame
 void AAH_HealingBot::Tick(float DeltaTime)
