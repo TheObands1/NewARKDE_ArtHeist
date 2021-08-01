@@ -34,7 +34,9 @@ public:
 	AAH_DoorKey();
 public:
 	UFUNCTION(BlueprintCallable, Category = "Getter")
-		FName GetKeyTag() const { return KeyTag; };
+	FName GetKeyTag() const { return KeyTag; };
+
+	void SetKeyTag(const FName NewKeyTagName) { KeyTag = NewKeyTagName; };
 protected:
 	//Functions
 	virtual void Pickup(AAH_Character* PickupCharacter) override;

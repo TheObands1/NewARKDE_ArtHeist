@@ -42,8 +42,8 @@ void AAH_BotSpawner::SpawnBot()
 
 	if (IsValid(BotClass))
 	{
-		FVector LocalSpawnPoint = GetSpawnPoint();
-		FVector SpawnPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), LocalSpawnPoint);
+		const FVector LocalSpawnPoint = GetSpawnPoint();
+		const FVector SpawnPoint = UKismetMathLibrary::TransformLocation(GetActorTransform(), LocalSpawnPoint);
 
 		FActorSpawnParameters SpawnParameter;
 		SpawnParameter.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -52,7 +52,7 @@ void AAH_BotSpawner::SpawnBot()
 		//AAH_Bot* NewBot = GetWorld()->SpawnActor<AAH_Bot>(BotClass, SpawnPoint, FRotator::ZeroRotator, SpawnParameter);
 		
 		//For Spawning the actor but setting some characteristics, such as the BotSpawner that created it, first before it actually appears in world:
-		FTransform BotTransform = FTransform(FRotator::ZeroRotator, SpawnPoint);
+		const FTransform BotTransform = FTransform(FRotator::ZeroRotator, SpawnPoint);
 		AAH_Bot* NewBot = GetWorld()->SpawnActorDeferred<AAH_Bot>(BotClass, BotTransform);
 
 		if (IsValid(NewBot))
@@ -71,7 +71,7 @@ FVector AAH_BotSpawner::GetSpawnPoint()
 {
 	if (SpawnPoints.Num() > 0)
 	{
-		int IndexSelected = FMath::RandRange(0, (SpawnPoints.Num() - 1));
+		const int IndexSelected = FMath::RandRange(0, (SpawnPoints.Num() - 1));
 
 		return SpawnPoints[IndexSelected];
 	}
