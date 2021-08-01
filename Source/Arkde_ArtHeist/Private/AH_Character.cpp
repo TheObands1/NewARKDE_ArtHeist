@@ -62,6 +62,7 @@ AAH_Character::AAH_Character()
 
 	WidgetBurningComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetBurningComponent"));
 	WidgetBurningComponent->SetupAttachment(RootComponent);
+	WidgetBurningComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	StepSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("StepSoundComponent"));
 	StepSoundComponent->SetupAttachment(RootComponent);
@@ -670,7 +671,7 @@ void AAH_Character::DeactivateBurningSymbol()
 {
 	if (IsValid(BurningSymbolReference))
 	{
-		BurningSymbolReference->SetVisibility(ESlateVisibility::Hidden);
+		BurningSymbolReference->SetVisibility(ESlateVisibility::Collapsed);
 	}
 }
 

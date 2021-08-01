@@ -59,6 +59,7 @@ void AAH_Rifle::StartAction()
 				AAH_Character* HitCharacter = Cast<AAH_Character>(HitActor);
 				if (IsValid(HitCharacter))
 				{
+					BP_CheckHitResult(HitResult);
 					bool bIsHitCharacterAPlayer = (HitCharacter->GetCharacterType() == EAH_CharacterType::CharacterType_Player);
 					//If the linetrace hits a player and the owner is a enemy
 					if (bIsHitCharacterAPlayer && IsValid(EnemyOwner))

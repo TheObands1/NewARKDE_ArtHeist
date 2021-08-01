@@ -9,6 +9,7 @@
 class USceneComponent;
 class UStaticMeshComponent;
 class UBoxComponent;
+class UWidgetComponent;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_LaunchPad : public AActor
@@ -25,6 +26,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UBoxComponent* LaunchPadColliderComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UWidgetComponent* ActivationSignComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UWidgetComponent* DeActivationSignComponent;
 
 protected:
 	//Variables
@@ -48,6 +55,10 @@ protected:
 
 public:	
 	// Called every frame
+
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_ShowActivationStatusSign();
+
 	virtual void Tick(float DeltaTime) override;
 
 

@@ -35,6 +35,7 @@ void AAH_Civilian::CivilianIsDamaged(UAH_HealthComponent* CurrentHealthComponent
 		if (IsValid(MyOwnAIController))
 		{
 			MyOwnAIController->UnPossess();
+			MyOwnAIController->Destroy();
 		}
 	}
 	else

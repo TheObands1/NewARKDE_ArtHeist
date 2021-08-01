@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "AH_Character.h"
+#include "Components/WidgetComponent.h"
 
 // Sets default values
 AAH_LaunchPad::AAH_LaunchPad()
@@ -24,8 +25,14 @@ AAH_LaunchPad::AAH_LaunchPad()
 	LaunchPadColliderComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	LaunchPadColliderComponent->SetCollisionResponseToChannel(ECC_Pawn, ECR_Overlap);
 
+	ActivationSignComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("ActivationSignComponent"));
+	ActivationSignComponent->SetupAttachment(RootComponent);
+
+	DeActivationSignComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("DeActivationSignComponent"));
+	DeActivationSignComponent->SetupAttachment(RootComponent);
+
 	LaunchDirection = FVector(0, 0, 1500);
-	bIsLaunchPadActive = true;
+	bIsLaunchPadActive = false;
 }
 
 // Called when the game starts or when spawned
@@ -38,6 +45,7 @@ void AAH_LaunchPad::BeginPlay()
 
 void AAH_LaunchPad::LaunchPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	BP_ShowActivationStatusSign();
 	if (bIsLaunchPadActive)
 	{
 		if (IsValid(OtherActor))

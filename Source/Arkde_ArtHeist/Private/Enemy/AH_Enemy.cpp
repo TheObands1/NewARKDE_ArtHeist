@@ -23,6 +23,7 @@ AAH_Enemy::AAH_Enemy()
 
 	WidgetHealthBarComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("WidgetHealthBarComponent"));
 	WidgetHealthBarComponent->SetupAttachment(RootComponent);
+	WidgetHealthBarComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	bLoopPath = false;
 	bIsEnemyAfraid = false;
@@ -30,7 +31,7 @@ AAH_Enemy::AAH_Enemy()
 	DirectionIndex = 1;
 	WaitingTimeOnPathPoint = 1;
 	WeaponErrorMargin = 50;
-	XPValue = 20.0f;
+	XPValue = 35.0f;
 	LootProbability = 100.0f;
 }
 
@@ -71,6 +72,7 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 		{
 			MyAIController->DeactivateAIPerception();
 			MyAIController->UnPossess();
+			MyAIController->Destroy();
 		}
 
 		if (IsValid(GameInstanceReference) && !bIsEnemyDefeated)
@@ -98,9 +100,6 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 			ShowHealthBar();
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle_HideHealthBar, this, &AAH_Enemy::HideHealthBar, 1.0f, false);
 		}
-
-
-
 
 		if (IsValid(MyAIController))
 		{

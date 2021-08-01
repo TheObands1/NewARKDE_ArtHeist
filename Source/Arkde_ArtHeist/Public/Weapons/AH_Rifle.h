@@ -51,4 +51,7 @@ protected:
 	virtual void StartAction() override;
 
 	virtual void StopAction() override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void BP_CheckHitResult(FHitResult NewHitResult);
 };
