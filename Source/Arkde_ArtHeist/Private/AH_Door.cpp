@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "AH_Character.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AAH_Door::AAH_Door()
@@ -50,6 +52,7 @@ void AAH_Door::Tick(float DeltaTime)
 void AAH_Door::OpenDoor()
 {
 	bIsOpen = true;
+	PlayDoorOpeningSound();
 	BP_OpenDoor(); //This function handles the animation for the opening of the door
 }
 
@@ -76,9 +79,30 @@ void AAH_Door::CheckKeyFromPlayer(UPrimitiveComponent* OverlappedComponent, AAct
 			}
 			else
 			{
+				PlayPlayerNeedsKeySound();
 				BP_PlayerNeedsKey();
 			}
 			
 		}
 	}
+}
+
+void AAH_Door::PlayDoorOpeningSound()
+{
+	if (!IsValid(DoorOpeningSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), DoorOpeningSound, GetActorLocation());
+}
+
+void AAH_Door::PlayPlayerNeedsKeySound()
+{
+	if (!IsValid(PlayerNeedsKeySound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), PlayerNeedsKeySound, GetActorLocation());
 }

@@ -9,6 +9,7 @@
 class USphereComponent; //Foward Declaration
 class AAH_Character;
 class AAH_GameMode;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Item : public AActor
@@ -24,6 +25,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	AAH_GameMode* GameModeReference;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* PickUpSound;
+
 	
 public:	
 	// Sets default values for this actor's properties
@@ -37,6 +41,8 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Item")
 	void BP_Pickup(AAH_Character* PickupCharacter);
+
+	void PlayPickUpSound();
 
 public:	
 	// Called every frame

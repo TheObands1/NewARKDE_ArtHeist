@@ -20,7 +20,6 @@ protected:
 	UStaticMeshComponent* HealthBoxMeshComponent;
 
 protected:
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HealthValue")
 	float HealthValue;
 
@@ -34,6 +33,4 @@ protected:
 	//Functions
 	virtual void Pickup(AAH_Character* PickupCharacter) override;
 
-
-	
 };

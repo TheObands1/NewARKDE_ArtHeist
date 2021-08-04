@@ -9,6 +9,7 @@
 class USceneComponent;
 class UStaticMeshComponent;
 class UBoxComponent;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_Door : public AActor
@@ -40,8 +41,19 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Door")
 	FName DoorTag;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* DoorOpeningSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* PlayerNeedsKeySound;
+
 protected:
-	//FUNCTIONS
+	//Functions
+
+	void PlayDoorOpeningSound();
+
+	void PlayPlayerNeedsKeySound();
+
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "Collision")
 	void BP_PlayerNeedsKey();
 	

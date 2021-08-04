@@ -5,6 +5,8 @@
 #include "Components/SphereComponent.h"
 #include "AH_Character.h"
 #include "Core/AH_GameMode.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AAH_Item::AAH_Item()
@@ -27,6 +29,16 @@ void AAH_Item::BeginPlay()
 {
 	Super::BeginPlay();
 	GameModeReference = Cast<AAH_GameMode>(GetWorld()->GetAuthGameMode());
+}
+
+void AAH_Item::PlayPickUpSound()
+{
+	if (!IsValid(PickUpSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), PickUpSound, GetActorLocation());
 }
 
 // Called every frame

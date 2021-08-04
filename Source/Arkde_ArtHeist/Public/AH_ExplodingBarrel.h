@@ -14,6 +14,7 @@ class UCapsuleComponent;
 class UAH_HealthComponent;
 class UParticleSystem;
 class AAH_Character;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_ExplodingBarrel : public AActor
@@ -38,6 +39,11 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
 	UParticleSystem* ExplosionEffect;
+
+protected:
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* ExplosionSound;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -53,6 +59,7 @@ protected:
 	UFUNCTION()
 	void OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
 
+	void PlayExplosionSound();
 
 public:	
 	// Called every frame

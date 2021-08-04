@@ -610,15 +610,6 @@ void AAH_Character::UpdateUltimateDurationWithTimer(EAH_UltimateType UltimateTyp
 	UpdateUltimateDuration(UltimateFrequency, UltimateType);
 }
 
-void AAH_Character::GoToMainMenu()
-{
-	UGameplayStatics::OpenLevel(GetWorld(), MainMenuMapName);
-	if (IsValid(GameInstanceReference))
-	{
-		GameInstanceReference->SaveData();
-	}
-}
-
 void AAH_Character::ControlGamePausedState()
 {
 	/*
@@ -702,10 +693,6 @@ void AAH_Character::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("UltimateMelee", IE_Pressed, this, &AAH_Character::InitializeUltimateMeleeBehavior);
 	PlayerInputComponent->BindAction("UltimateMelee", IE_Released, this, &AAH_Character::StopUltimate);
-
-	PlayerInputComponent->BindAction("Exit", IE_Pressed, this, &AAH_Character::GoToMainMenu);
-
-	//PlayerInputComponent->BindAction("Pause", IE_Pressed, this, &AAH_Character::ControlGamePausedState).bExecuteWhenPaused = true;
 
 
 }

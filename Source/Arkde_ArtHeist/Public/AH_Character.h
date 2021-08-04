@@ -351,8 +351,6 @@ protected:
 
 	virtual void StopUltimate();
 
-	void GoToMainMenu();
-
 	UFUNCTION()
 	virtual void BeginUltimateBehaviour(EAH_UltimateType UltimateType);
 

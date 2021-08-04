@@ -37,4 +37,12 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Pause Menu")
 	void BP_SaveAndExit();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Controls Menu")
+	void BP_ShowControls();
+
+public:
+	UFUNCTION(BlueprintCallable, Category = "Controls Menu")
+	void ShowControls();
+
+
 };

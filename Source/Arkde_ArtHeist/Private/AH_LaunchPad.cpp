@@ -6,6 +6,9 @@
 #include "Components/BoxComponent.h"
 #include "AH_Character.h"
 #include "Components/WidgetComponent.h"
+#include "Sound/SoundCue.h"
+#include "Kismet/GameplayStatics.h"
+
 
 // Sets default values
 AAH_LaunchPad::AAH_LaunchPad()
@@ -56,10 +59,35 @@ void AAH_LaunchPad::LaunchPlayer(UPrimitiveComponent* OverlappedComponent, AActo
 			//Verifies if actor is a character
 			if (IsValid(OverlappedCharacter))
 			{
+				PlayLaunchingSound();
 				OverlappedCharacter->LaunchCharacter(LaunchDirection, false, false);
 			}
 		}
 	}
+	else
+	{
+		PlayLaunchpadInactiveSound();
+	}
+}
+
+void AAH_LaunchPad::PlayLaunchingSound()
+{
+	if (!IsValid(LaunchingSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), LaunchingSound, GetActorLocation());
+}
+
+void AAH_LaunchPad::PlayLaunchpadInactiveSound()
+{
+	if (!IsValid(LaunchpadInactiveSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), LaunchpadInactiveSound, GetActorLocation());
 }
 
 // Called every frame

@@ -25,8 +25,9 @@ void AAH_DoorKey::Pickup(AAH_Character* PickupCharacter)
 		{
 			GameModeReference->AddKeyToCharacter(PickupCharacter, KeyTag);
 			PickupCharacter->GainUltimateXP(XPValue);
+			PlayPickUpSound();
+			Destroy();
 		}
 
 	}
-	Destroy();
 }

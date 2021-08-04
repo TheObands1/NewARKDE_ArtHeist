@@ -11,6 +11,7 @@ class USphereComponent;
 class UAH_HealthComponent;
 class UParticleSystem;
 class URadialForceComponent;
+class USoundCue;
 
 
 UCLASS()
@@ -63,6 +64,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<UDamageType> MyDamageType;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* ExplosionSound;
+
 public:	
 	// Sets default values for this actor's properties
 	AAH_LandMine();
@@ -70,6 +74,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void PlayExplosionSound();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_Warning();
@@ -86,6 +92,7 @@ protected:
 
 	UFUNCTION()
 	void OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
+
 
 
 public:	

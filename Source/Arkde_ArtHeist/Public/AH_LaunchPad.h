@@ -10,6 +10,7 @@ class USceneComponent;
 class UStaticMeshComponent;
 class UBoxComponent;
 class UWidgetComponent;
+class USoundCue;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_LaunchPad : public AActor
@@ -37,6 +38,13 @@ protected:
 	//Variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Launching")
 	FVector LaunchDirection;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* LaunchingSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* LaunchpadInactiveSound;
+
 public:
 	//Public variables
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Launching")
@@ -53,6 +61,9 @@ protected:
 	UFUNCTION()
 	void LaunchPlayer(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	void PlayLaunchingSound();
+
+	void PlayLaunchpadInactiveSound();
 public:	
 	// Called every frame
 

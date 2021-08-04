@@ -15,13 +15,6 @@ void UAH_PauseMenuWidget::ResumeGame()
 	{
 		PossiblePlayerController->PauseTheGame();
 	}
-/*
-	AAH_Character* PossibleCharacter = Cast<AAH_Character>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	if (IsValid(PossibleCharacter))
-	{
-		PossibleCharacter->ControlGamePausedState();
-	}
-*/
 }
 
 void UAH_PauseMenuWidget::Options()
@@ -40,4 +33,9 @@ void UAH_PauseMenuWidget::SaveAndExit()
 	}
 
 	UGameplayStatics::OpenLevel(GetWorld(), MainMenuLevelName);
+}
+
+void UAH_PauseMenuWidget::ShowControls()
+{
+	BP_ShowControls();
 }

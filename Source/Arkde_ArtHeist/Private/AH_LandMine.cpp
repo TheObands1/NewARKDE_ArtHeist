@@ -10,6 +10,8 @@
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
+#include "Sound/SoundCue.h"
+
 
 // Sets default values
 AAH_LandMine::AAH_LandMine()
@@ -54,6 +56,16 @@ void AAH_LandMine::BeginPlay()
 	HealthComponent->OnHealthChangeDelegate.AddDynamic(this, &AAH_LandMine::OnHealthChange);
 }
 
+void AAH_LandMine::PlayExplosionSound()
+{
+	if (!IsValid(ExplosionSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionSound, GetActorLocation());
+}
+
 void AAH_LandMine::Detect(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (IsValid(OtherActor))
@@ -74,6 +86,7 @@ void AAH_LandMine::Explosion(UPrimitiveComponent* OverlappedComponent, AActor* O
 			BP_TestRadialDamage();
 			RadialForceComponent->FireImpulse();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, OriginLocation);
+			PlayExplosionSound();
 			Destroy();
 		}
 		

@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
 #include "AH_Character.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AAH_ExplodingBarrel::AAH_ExplodingBarrel()
@@ -65,10 +66,21 @@ void AAH_ExplodingBarrel::OnHealthChange(UAH_HealthComponent* CurrentHealthCompo
 			FVector OriginLocation = this->GetActorLocation();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, OriginLocation);
 			DetectionCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+			PlayExplosionSound();
 			Destroy();
 		}
 
 	}
+}
+
+void AAH_ExplodingBarrel::PlayExplosionSound()
+{
+	if (!IsValid(ExplosionSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionSound, GetActorLocation());
 }
 
 // Called every frame

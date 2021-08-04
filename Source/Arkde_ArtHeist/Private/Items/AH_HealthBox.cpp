@@ -22,6 +22,7 @@ void AAH_HealthBox::Pickup(AAH_Character* PickupCharacter)
 
 	if (bIsHealingSuccessfull)
 	{
+		PlayPickUpSound();
 		Destroy();
 	}
 
