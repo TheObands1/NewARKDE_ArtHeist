@@ -8,6 +8,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnUltimateUpdateSignature, float, CurrentUltimateXP, float, MaxUltimateXP);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUltimateStatusSignature, bool, bIsAvailable);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnUltimateStartSignature, int, CodeForUltimate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnUltimateStopSignature);
 
 class UCameraComponent;
 class USpringArmComponent;
@@ -72,6 +74,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAudioComponent* VoiceSoundComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* SoundTrackComponent;
 
 protected:
 	//Variables
@@ -273,7 +278,13 @@ protected:
 	USoundCue* UltimateMeleeSound;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* UltimateMeleeSoundtrackSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
 	USoundCue* UltimateRifleSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* UltimateRifleSoundtrackSound;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
 	USoundCue* JumpSound;
@@ -304,6 +315,12 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnUltimateStatusSignature OnUltimateStatusDelegate;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnUltimateStartSignature OnUltimateStartDelegate;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnUltimateStopSignature OnUltimateStopDelegate;
 
 public:
 	// Sets default values for this character's properties
@@ -367,9 +384,6 @@ protected:
 	//it needs to have a Macro. Also, it needs to have all the parameters of the delegate itself.
 	UFUNCTION()
 	void MakeMeleeDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	//UFUNCTION()
-	//void MakeMeleeArmDamage(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser);
@@ -438,6 +452,8 @@ public:
 	bool HasKey(FName KeyTag);
 
 	bool HasToDestroy(){ return bHasToDestroy; };
+
+	bool GetIsUsingUltimate() { return bIsUsingUltimate; };
 
 	UFUNCTION(BlueprintCallable)
 	bool TryToAddHealth(float HealthToAdd);

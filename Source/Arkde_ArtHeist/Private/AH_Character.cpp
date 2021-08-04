@@ -451,7 +451,7 @@ void AAH_Character::ResetCombo()
 	SetComboState(false);
 	CurrentComboMultiplier = 1.0f;
 	MeleeArmDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	MeleeDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision); //helps
+	MeleeDetectorComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision); 
 }
 
 void AAH_Character::StartUltimate(EAH_UltimateType UltimateType)
@@ -514,6 +514,7 @@ void AAH_Character::PlayVoiceSound(USoundCue* VoiceSound)
 	VoiceSoundComponent->Play();
 }
 
+
 void AAH_Character::GainUltimateXP(float XPGained)
 {
 	if (bCanUseUltimate || bIsUsingUltimate)
@@ -541,6 +542,7 @@ void AAH_Character::BeginUltimateBehaviour(EAH_UltimateType UltimateType)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = UltimateWalkSpeed;
 		NormalPlayRate = UltimatePlayRate;
+		OnUltimateStartDelegate.Broadcast(0);
 	}
 
 	if (UltimateType == EAH_UltimateType::UltimateType_Melee)
@@ -554,6 +556,7 @@ void AAH_Character::BeginUltimateBehaviour(EAH_UltimateType UltimateType)
 		MeleeArmDetectorComponent->SetCapsuleHalfHeight(UltimateMeleeArmColliderHalfHeight);
 		MeleeArmDetectorComponent->SetCapsuleRadius(UltimateMeleeArmColliderRadius);
 		MeleeArmDetectorComponent->SetRelativeLocation(UltimateMeleeArmColliderLocation);
+		OnUltimateStartDelegate.Broadcast(1);
 	}
 
 	if (!bUltimateWithTick)
@@ -574,6 +577,8 @@ void AAH_Character::UpdateUltimateDuration(float Value, EAH_UltimateType Ultimat
 		bIsUsingUltimate = false;
 		CurrentUltimateXP = 0.0f;
 		OnUltimateStatusDelegate.Broadcast(false);
+		OnUltimateStopDelegate.Broadcast();
+
 
 		if (UltimateType == EAH_UltimateType::UltimateType_Rifle)
 		{

@@ -9,6 +9,7 @@
 class UAudioComponent;
 class UBillboardComponent;
 class AAH_GameMode;
+class AAH_Character;
 
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_LevelMusic : public AActor
@@ -22,6 +23,9 @@ protected:
 	UAudioComponent* MusicAudioComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* SpecialSoundtrackComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UBillboardComponent* MusicBillboardComponent;
 
 protected:
@@ -31,6 +35,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "References")
 	AAH_GameMode* GameModeReference;
+
+	UPROPERTY(BlueprintReadOnly, Category = "References")
+	AAH_Character* PlayerReference;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -45,5 +52,11 @@ protected:
 
 	UFUNCTION()
 	void ChangeLevelMusic(bool bIsAlert);
+
+	UFUNCTION()
+	void StopUltimateSoundtrackMusic();
+
+	UFUNCTION()
+	void StartUltimateSoundtrackMusic(int UltimateSoundtrackCode);
 
 };
