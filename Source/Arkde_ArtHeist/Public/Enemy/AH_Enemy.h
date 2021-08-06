@@ -41,9 +41,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI|Navigation Path")
 	bool bLoopPath;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI|Navigation Path")
-	bool bIsEnemyAfraid;
-
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Enemy Defeated Counter")
 	bool bIsEnemyDefeated;
 
@@ -100,12 +97,15 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void BP_TryToSpawnLoot();
 
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void BP_RotateEnemyToFacePlayer(AAH_Character* CharacterToFace);
+
 	void HideHealthBar();
 
 	void ShowHealthBar();
 
-
 	bool TryToSpawnLoot();
+
 
 
 public:

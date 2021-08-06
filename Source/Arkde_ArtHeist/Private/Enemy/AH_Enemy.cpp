@@ -16,6 +16,8 @@
 #include "Components/WidgetComponent.h"
 #include "UI/Enemy/AH_EnemyHealthBar.h"
 #include "Core/AH_GameMode.h"
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAH_Enemy::AAH_Enemy()
@@ -26,7 +28,6 @@ AAH_Enemy::AAH_Enemy()
 	WidgetHealthBarComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	bLoopPath = false;
-	bIsEnemyAfraid = false;
 	bIsEnemyDefeated = false;
 	DirectionIndex = 1;
 	WaitingTimeOnPathPoint = 1;
@@ -104,6 +105,7 @@ void AAH_Enemy::EnemyIsDamaged(UAH_HealthComponent* CurrentHealthComponent, AAct
 		if (IsValid(MyAIController))
 		{
 			AAH_Rifle* PossibleRifle = Cast<AAH_Rifle>(DamageCauser);
+			AAH_Character* PossiblePlayer = Cast<AAH_Character>(DamageCauser);
 			if (IsValid(PossibleRifle))
 			{
 				MyAIController->SetIsReceivingDamage(true);

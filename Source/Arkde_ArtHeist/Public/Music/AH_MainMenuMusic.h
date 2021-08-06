@@ -6,10 +6,22 @@
 #include "GameFramework/Actor.h"
 #include "AH_MainMenuMusic.generated.h"
 
+
+class UAudioComponent;
+class UBillboardComponent;
+
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_MainMenuMusic : public AActor
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* MusicAudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UBillboardComponent* MusicBillboardComponent;
 	
 public:	
 	// Sets default values for this actor's properties
@@ -18,9 +30,5 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 };

@@ -50,9 +50,9 @@ void AAH_InteractiveObject::NotifyActorBeginOverlap(AActor* OtherActor)
 		//the actor is something other than a character, then "OverlappedCharacter"'s value will be null
 		AAH_Character* OverlappedCharacter = Cast<AAH_Character>(OtherActor);
 		//Verifies if actor is a character
-		if (IsValid(OverlappedCharacter))
+		if (IsValid(OverlappedCharacter) && OverlappedCharacter->GetCharacterType() == EAH_CharacterType::CharacterType_Player)
 		{
-			//If actor is character, send reference to character
+			//If actor is a player character, send reference to Character and show interact button
 			OverlappedCharacter->InteractiveObject = this;
 			BP_CharacterEntersCollision();
 		}
@@ -69,7 +69,7 @@ void AAH_InteractiveObject::NotifyActorEndOverlap(AActor* OtherActor)
 		//the actor is something other than a character, then "OverlappedCharacter"'s value will be null
 		AAH_Character* OverlappedCharacter = Cast<AAH_Character>(OtherActor);
 		//Verifies if actor is a character
-		if (IsValid(OverlappedCharacter))
+		if (IsValid(OverlappedCharacter) && OverlappedCharacter->GetCharacterType() == EAH_CharacterType::CharacterType_Player)
 		{
 			OverlappedCharacter->InteractiveObject = nullptr;
 			BP_CharacterLeavesCollision();
