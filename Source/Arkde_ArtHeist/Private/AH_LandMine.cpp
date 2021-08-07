@@ -37,11 +37,6 @@ AAH_LandMine::AAH_LandMine()
 
 	HealthComponent = CreateDefaultSubobject<UAH_HealthComponent>(TEXT("HealthComponent"));
 
-	ForceImpulse = 1000;
-
-	RadialForceComponent = CreateDefaultSubobject<URadialForceComponent>(TEXT("RadialForceComponent"));
-	RadialForceComponent->ImpulseStrength = ForceImpulse;
-
 	ExplosionDamage = 200.0f;
 	ExplosionRadious = 100.0f;
 
@@ -83,8 +78,6 @@ void AAH_LandMine::Explosion(UPrimitiveComponent* OverlappedComponent, AActor* O
 		{
 			FVector OriginLocation = this->GetActorLocation();
 			UGameplayStatics::ApplyRadialDamage(GetWorld(), ExplosionDamage, OriginLocation, ExplosionRadious, MyDamageType, TArray<AActor*>(), this, (AController*)GetOwner(), false, ECC_Visibility);
-			BP_TestRadialDamage();
-			RadialForceComponent->FireImpulse();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ExplosionEffect, OriginLocation);
 			PlayExplosionSound();
 			Destroy();

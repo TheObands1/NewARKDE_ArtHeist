@@ -102,6 +102,7 @@ AAH_Character::AAH_Character()
 	
 	bUltimateWithTick = false;
 	bIsGamePaused = false;
+	bIsPlayerAlive = true;
 
 }
 
@@ -647,8 +648,9 @@ void AAH_Character::OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, 
 		PlayVoiceSound(DeathSound);
 		if (GetCharacterType() == EAH_CharacterType::CharacterType_Player)
 		{
-			if (IsValid(GameModeReference))
+			if (IsValid(GameModeReference) && bIsPlayerAlive)
 			{
+				bIsPlayerAlive = false;
 				GameModeReference->GameOver(this);
 			}
 		}

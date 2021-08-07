@@ -37,9 +37,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UAH_HealthComponent* HealthComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	URadialForceComponent* RadialForceComponent;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Effects")
 	UParticleSystem* ExplosionEffect;
 
@@ -57,9 +54,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Radial Force")
 	float ForceRadious;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Radial Force")
-	float ForceImpulse;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<UDamageType> MyDamageType;

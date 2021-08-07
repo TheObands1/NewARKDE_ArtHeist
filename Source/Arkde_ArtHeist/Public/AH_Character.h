@@ -113,6 +113,8 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Pause Menu")
 	bool bIsGamePaused;
 
+	bool bIsPlayerAlive;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Jumping")
 	int JumpCounter;
 
