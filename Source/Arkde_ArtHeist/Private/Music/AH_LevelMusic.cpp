@@ -48,6 +48,7 @@ void AAH_LevelMusic::BeginPlay()
 
 void AAH_LevelMusic::StopLevelMusic()
 {
+	SpecialSoundtrackComponent->Stop();
 	MusicAudioComponent->Stop();
 }
 
@@ -60,14 +61,16 @@ void AAH_LevelMusic::ChangeLevelMusic(bool bIsAlert)
 void AAH_LevelMusic::StopUltimateSoundtrackMusic()
 {
 	SpecialSoundtrackComponent->Stop();
-	MusicAudioComponent->Play();
+	if (PlayerReference->GetIsPlayerAlive())
+	{
+		MusicAudioComponent->Play();
+	}
 }
 
 void AAH_LevelMusic::StartUltimateSoundtrackMusic(int UltimateSoundtrackCode)
 {
-	StopLevelMusic();
+	MusicAudioComponent->Stop();
 	SpecialSoundtrackComponent->Play();
 	SpecialSoundtrackComponent->SetIntParameter("UltimateSoundtrack", UltimateSoundtrackCode);
-
 }
 

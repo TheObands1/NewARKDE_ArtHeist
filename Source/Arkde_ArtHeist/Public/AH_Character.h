@@ -438,6 +438,10 @@ public:
 
 	void SetMeleeState(bool NewState);
 
+	void SetUltimateFrequency(const float NewFrequency) { UltimateFrequency = NewFrequency; };
+	
+	void SetPlayRateToNormal() { NormalPlayRate = 1; };
+
 	void Burn();
 
 	void DamageDueToBurn();
@@ -457,6 +461,8 @@ public:
 
 	bool GetIsUsingUltimate() { return bIsUsingUltimate; };
 
+	bool GetIsPlayerAlive() { return bIsPlayerAlive; };
+
 	UFUNCTION(BlueprintCallable)
 	bool TryToAddHealth(float HealthToAdd);
 	
@@ -471,6 +477,6 @@ public:
 
 	UAH_HealthComponent* GetHealthComponent() { return HealthComponent; };
 
-	//EAH_UltimateType GetCurrentUltimate() {}
+	EAH_UltimateType GetCurrentUltimate() { return CurrentUltimateType; };
 
 };

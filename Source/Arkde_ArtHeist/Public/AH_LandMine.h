@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
 	USoundCue* ExplosionSound;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
+	USoundCue* LandMineDestructionSound;
+
 public:	
 	// Sets default values for this actor's properties
 	AAH_LandMine();
@@ -70,6 +73,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	void PlayExplosionSound();
+
+	void PlayLandMineDestructionSound();
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_Warning();

@@ -5,6 +5,7 @@
 #include "AH_Character.h"
 #include "AH_SpectatingCamera.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/AudioComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
@@ -12,6 +13,12 @@
 
 AAH_GameMode::AAH_GameMode()
 {
+	VictorySoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("VictorySoundComponent"));
+	VictorySoundComponent->SetupAttachment(RootComponent);
+
+	GameOverSoundComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("GameOverSoundComponent"));
+	GameOverSoundComponent->SetupAttachment(RootComponent);
+
 	MainMenuMapName = "MainMenu";
 	TimeToGoBackToMenuAfterVictory = 8.0f;
 	TimeToGoBackToMenuAfterGameOver = 8.0f;
@@ -78,17 +85,6 @@ void AAH_GameMode::MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_Spe
 
 }
 
-void AAH_GameMode::PlayMusic(USoundCue* SoundCueToPlay)
-{
-	if (!IsValid(SoundCueToPlay))
-	{
-		return;
-	}
-
-	UGameplayStatics::PlaySound2D(GetWorld(), SoundCueToPlay);
-
-
-}
 
 void AAH_GameMode::SetupEnemiesInLevel()
 {
@@ -117,7 +113,13 @@ void AAH_GameMode::Victory(AAH_Character* Character)
 	Character->DisableInput(nullptr);
 	MoveCameraToSpectatingPoint(Character, VictoryCamera);
 	BP_Victory(Character);
-	PlayMusic(VictoryMusic);
+	if (Character->GetIsUsingUltimate())
+	{
+		Character->SetUltimateFrequency(0);
+		Character->SetPlayRateToNormal();
+		Character->BP_StopUltimate(Character->GetCurrentUltimate());
+	}
+	VictorySoundComponent->Play();
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterVictory, false);
 	
 }
@@ -126,7 +128,6 @@ void AAH_GameMode::Victory(AAH_Character* Character)
 void AAH_GameMode::GameOver(AAH_Character* Character)
 {
 	OnGameOverDelegate.Broadcast();
-
 
 	Character->GetMovementComponent()->StopMovementImmediately();
 	Character->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -140,8 +141,16 @@ void AAH_GameMode::GameOver(AAH_Character* Character)
 		Character->DisableInput(nullptr);
 		MoveCameraToSpectatingPoint(Character, GameOverCamera);
 	}
+
+	if (Character->GetIsUsingUltimate())
+	{
+		Character->SetUltimateFrequency(0);
+		Character->SetPlayRateToNormal();
+		Character->BP_StopUltimate(Character->GetCurrentUltimate());
+	}
+
 	BP_GameOver(Character);
-	PlayMusic(GameOverMusic);
+	GameOverSoundComponent->Play();
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterGameOver, false);
 }
 

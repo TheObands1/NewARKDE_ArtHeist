@@ -17,10 +17,20 @@ class AAH_Character;
 class AAH_Enemy;
 class AAH_SpectatingCamera;
 class USoundCue;
+class UAudioComponent;
+
 UCLASS()
 class ARKDE_ARTHEIST_API AAH_GameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* VictorySoundComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UAudioComponent* GameOverSoundComponent;
 
 protected:
 	//Variables
@@ -47,12 +57,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Spectating Camera")
 	AAH_SpectatingCamera* GameOverCamera;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
-	USoundCue* VictoryMusic;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Audio")
-	USoundCue* GameOverMusic;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Level")
 	TArray<AAH_Enemy*> LevelEnemies;
 
@@ -70,8 +74,6 @@ protected:
 	void SetupSpectatingCameras();
 
 	void MoveCameraToSpectatingPoint(AAH_Character* Character, AAH_SpectatingCamera* SpectatingCamera);
-
-	void PlayMusic(USoundCue* SoundCueToPlay);
 
 	void SetupEnemiesInLevel();
 

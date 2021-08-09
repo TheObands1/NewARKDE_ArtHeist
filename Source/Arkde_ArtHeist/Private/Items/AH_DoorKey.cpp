@@ -12,7 +12,7 @@ AAH_DoorKey::AAH_DoorKey()
 	KeyMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	KeyTag = "KeyA";
-	XPValue = 40.0f;
+	XPValue = 50.0f;
 }
 
 void AAH_DoorKey::Pickup(AAH_Character* PickupCharacter)

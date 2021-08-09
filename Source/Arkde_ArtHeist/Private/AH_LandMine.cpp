@@ -61,6 +61,16 @@ void AAH_LandMine::PlayExplosionSound()
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), ExplosionSound, GetActorLocation());
 }
 
+void AAH_LandMine::PlayLandMineDestructionSound()
+{
+	if (!IsValid(LandMineDestructionSound))
+	{
+		return;
+	}
+
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), LandMineDestructionSound, GetActorLocation());
+}
+
 void AAH_LandMine::Detect(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (IsValid(OtherActor))
@@ -94,6 +104,7 @@ void AAH_LandMine::OnHealthChange(UAH_HealthComponent* CurrentHealthComponent, A
 		{
 			FVector OriginLocation = this->GetActorLocation();
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DestroyingEffect, OriginLocation);
+			PlayLandMineDestructionSound();
 			Destroy();
 		}
 		
