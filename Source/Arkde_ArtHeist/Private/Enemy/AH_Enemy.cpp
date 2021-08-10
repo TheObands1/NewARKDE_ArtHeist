@@ -27,6 +27,7 @@ AAH_Enemy::AAH_Enemy()
 	WidgetHealthBarComponent->SetupAttachment(RootComponent);
 	WidgetHealthBarComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
+	CharacterType = EAH_CharacterType::CharacterType_Enemy;
 	bLoopPath = false;
 	bIsEnemyDefeated = false;
 	DirectionIndex = 1;
@@ -162,7 +163,7 @@ bool AAH_Enemy::TryToSpawnLoot()
 		return false;
 	}
 
-	float SelectedProbability = FMath::FRandRange(0, 100);
+	const float SelectedProbability = FMath::FRandRange(0, 100);
 
 	if (SelectedProbability <= LootProbability)
 	{
@@ -176,7 +177,7 @@ bool AAH_Enemy::TryToSpawnLoot()
 	return false;
 }
 
-void AAH_Enemy::SetIsAlert(bool NewValue)
+void AAH_Enemy::SetIsAlert(const bool NewValue)
 {
 	bIsAlert = NewValue;
 	if (IsValid(GameModeReference))

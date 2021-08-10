@@ -118,7 +118,7 @@ public:
 
 	float GetWaitingTimeOnPathPoint() { return WaitingTimeOnPathPoint; };
 
-	void SetIsAlert(bool NewValue);
+	void SetIsAlert(const bool NewValue);
 
 
 };

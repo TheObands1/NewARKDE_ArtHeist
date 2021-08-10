@@ -21,7 +21,7 @@ void UAH_GameInstance::SaveData()
 {
 	BP_SaveData();
 	USaveGame* SaveGameObject = nullptr;
-	bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
+	const bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
 
 	if (bExistingData)
 	{
@@ -49,7 +49,7 @@ void UAH_GameInstance::LoadData()
 {
 	BP_LoadData();
 	USaveGame* SaveGameObject = nullptr;
-	bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
+	const bool bExistingData = UGameplayStatics::DoesSaveGameExist(SaveSlotName, 0);
 
 	if (bExistingData)
 	{

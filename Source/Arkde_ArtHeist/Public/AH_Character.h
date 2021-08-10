@@ -256,7 +256,7 @@ protected:
 	UNiagaraSystem* Ultimate2Effect2;
 	*/
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Type")
 	EAH_CharacterType CharacterType;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ultimate")
@@ -406,16 +406,16 @@ public:
 	virtual void AddControllerPitchInput(float value) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SetComboState(bool NewState);
+	void SetComboState(const bool NewState);
 
 	UFUNCTION(BlueprintCallable)
 	void ResetCombo();
 
 	UFUNCTION(BlueprintCallable)
-	void GainUltimateXP(float XPGained);
+	void GainUltimateXP(const float XPGained);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void BP_GainUltimateXP(float XPGained);
+	void BP_GainUltimateXP(const float XPGained);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void BP_StartUltimate(EAH_UltimateType UltimateType);
@@ -424,19 +424,16 @@ public:
 	void BP_StopUltimate(EAH_UltimateType UltimateType);
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void BP_UpdateUltimateDuration(float Value, EAH_UltimateType UltimateType);
+	void BP_UpdateUltimateDuration(const float Value, EAH_UltimateType UltimateType);
 
 	UFUNCTION(BlueprintCallable)
 	void SetIsGamePaused(bool NewValue) { bIsGamePaused = NewValue; };
-
-	UFUNCTION(BlueprintCallable)
-	void ControlGamePausedState();
 
 	void AddKey(FName NewKey);
 
 	void SetMeleeDetectorCollision(ECollisionEnabled::Type NewCollisionState);
 
-	void SetMeleeState(bool NewState);
+	void SetMeleeState(const bool NewState);
 
 	void SetUltimateFrequency(const float NewFrequency) { UltimateFrequency = NewFrequency; };
 	
@@ -450,7 +447,7 @@ public:
 
 	void PlayVoiceSound(USoundCue* VoiceSound);
 
-	virtual void UpdateUltimateDuration(float Value, EAH_UltimateType UltimateType);
+	virtual void UpdateUltimateDuration(const float Value, EAH_UltimateType UltimateType);
 
 	UFUNCTION()
 	virtual void UpdateUltimateDurationWithTimer(EAH_UltimateType UltimateType);

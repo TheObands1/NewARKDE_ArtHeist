@@ -72,6 +72,8 @@ AAH_Character::AAH_Character()
 	
 	HealthComponent = CreateDefaultSubobject<UAH_HealthComponent>(TEXT("HealthComponent"));
 
+	CharacterType = EAH_CharacterType::CharacterType_Player;
+
 	MeleeDamage = 10.0f;
 	MaxComboMultiplier = 4.0f;
 	CurrentComboMultiplier = 1.0f;
@@ -122,7 +124,6 @@ void AAH_Character::Tick(float DeltaTime)
 
 	if (bIsUsingUltimate && bUltimateWithTick)
 	{
-		//RIFLE DOES NOT GO HERE ITS JUST FOR NOW
 		if (CurrentUltimateType == EAH_UltimateType::UltimateType_Rifle)
 		{
 			UpdateUltimateDuration(DeltaTime, EAH_UltimateType::UltimateType_Rifle);
@@ -397,7 +398,7 @@ void AAH_Character::InitializeUltimateMeleeBehavior()
 	StartUltimate(EAH_UltimateType::UltimateType_Melee);
 }
 
-void AAH_Character::SetMeleeState(bool NewState)
+void AAH_Character::SetMeleeState(const bool NewState)
 {
 	bIsDoingMelee = NewState;
 	bCanUseWeapon = !NewState;
@@ -442,7 +443,7 @@ void AAH_Character::SetMeleeDetectorCollision(ECollisionEnabled::Type NewCollisi
 
 }
 
-void AAH_Character::SetComboState(bool NewState)
+void AAH_Character::SetComboState(const bool NewState)
 {
 	bIsComboEnabled = NewState;
 }
@@ -516,7 +517,7 @@ void AAH_Character::PlayVoiceSound(USoundCue* VoiceSound)
 }
 
 
-void AAH_Character::GainUltimateXP(float XPGained)
+void AAH_Character::GainUltimateXP(const float XPGained)
 {
 	if (bCanUseUltimate || bIsUsingUltimate)
 	{
@@ -567,7 +568,7 @@ void AAH_Character::BeginUltimateBehaviour(EAH_UltimateType UltimateType)
 	}
 }
 
-void AAH_Character::UpdateUltimateDuration(float Value, EAH_UltimateType UltimateType)
+void AAH_Character::UpdateUltimateDuration(const float Value, EAH_UltimateType UltimateType)
 {
 	CurrentUltimateDuration = FMath::Clamp((CurrentUltimateDuration - Value), 0.0f, MaxUltimateDuration);
 	BP_UpdateUltimateDuration(Value, UltimateType);
@@ -614,25 +615,6 @@ void AAH_Character::UpdateUltimateDuration(float Value, EAH_UltimateType Ultimat
 void AAH_Character::UpdateUltimateDurationWithTimer(EAH_UltimateType UltimateType)
 {
 	UpdateUltimateDuration(UltimateFrequency, UltimateType);
-}
-
-void AAH_Character::ControlGamePausedState()
-{
-	/*
-	if (!bIsGamePaused)
-	{
-		bIsGamePaused = true;
-		BP_PauseGame(bIsGamePaused);//Add PauseMenuWidget
-		return;
-	}
-
-	if (bIsGamePaused)
-	{
-		bIsGamePaused = false;
-		BP_UnPauseGame(bIsGamePaused);//Delete PauseMenuWidget
-		return;
-	}
-	*/
 }
 
 

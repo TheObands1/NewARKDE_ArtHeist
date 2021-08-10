@@ -12,7 +12,6 @@ AAH_LaunchPadButton::AAH_LaunchPadButton()
 
 void AAH_LaunchPadButton::Action()
 {
-	
 	if(IsValid(LaunchingPad))
 	{ 
 		

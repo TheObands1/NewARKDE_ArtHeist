@@ -18,7 +18,7 @@ void AAH_HealthBox::Pickup(AAH_Character* PickupCharacter)
 {
 	Super::Pickup(PickupCharacter);
 
-	bool bIsHealingSuccessfull = PickupCharacter->TryToAddHealth(HealthValue);
+	const bool bIsHealingSuccessfull = PickupCharacter->TryToAddHealth(HealthValue);
 
 	if (bIsHealingSuccessfull)
 	{

@@ -10,7 +10,7 @@
 
 AAH_Civilian::AAH_Civilian()
 {
-
+	CharacterType = EAH_CharacterType::CharacterType_Enemy;
 }
 
 void AAH_Civilian::BeginPlay()
