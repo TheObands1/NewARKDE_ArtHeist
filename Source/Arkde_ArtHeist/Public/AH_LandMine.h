@@ -52,9 +52,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Damage")
 	float ExplosionRadious;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Radial Force")
-	float ForceRadious;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Damage")
 	TSubclassOf<UDamageType> MyDamageType;
 

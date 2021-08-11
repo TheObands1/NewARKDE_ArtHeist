@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundCue.h"
 #include "Enemy/AH_Enemy.h"
+#include "Core/AH_GameInstance.h"
 
 AAH_GameMode::AAH_GameMode()
 {
@@ -30,8 +31,6 @@ void AAH_GameMode::BeginPlay()
 	Super::BeginPlay();
 	SetupSpectatingCameras();
 	SetupEnemiesInLevel();
-
-
 }
 
 void AAH_GameMode::SetupSpectatingCameras()
@@ -120,7 +119,9 @@ void AAH_GameMode::Victory(AAH_Character* Character)
 		Character->BP_StopUltimate(Character->GetCurrentUltimate());
 	}
 	VictorySoundComponent->Play();
+
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterVictory, false);
+
 	
 }
 
@@ -152,6 +153,7 @@ void AAH_GameMode::GameOver(AAH_Character* Character)
 	BP_GameOver(Character);
 	GameOverSoundComponent->Play();
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle_BackToMainMenu, this, &AAH_GameMode::BackToMainMenu, TimeToGoBackToMenuAfterGameOver, false);
+
 }
 
 void AAH_GameMode::BackToMainMenu()

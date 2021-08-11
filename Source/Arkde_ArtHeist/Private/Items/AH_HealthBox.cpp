@@ -11,7 +11,7 @@ AAH_HealthBox::AAH_HealthBox()
 	HealthBoxMeshComponent->SetupAttachment(RootComponent);
 	HealthBoxMeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	HealthValue = 15.0f;
+	HealthValue = 20.0f;
 }
 
 void AAH_HealthBox::Pickup(AAH_Character* PickupCharacter)
